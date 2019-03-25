@@ -12,7 +12,7 @@ class RecordsTagsTableSeeder extends Seeder
      */
     public function run()
     {
-        $records_tags = factory(RecordTag::class, config('default.seeds.records_tags.number'))->make();
+        $records_tags = factory(RecordTag::class, config('seeds.records_tags.number'))->make();
 
         RecordTag::insert($records_tags->unique(function ($item) {
             return $item['record_id'].'-'.$item['tag_id'];

@@ -12,6 +12,6 @@ class TypesTableSeeder extends Seeder
      */
     public function run()
     {
-        Type::insert(config('default.factories.type'));
+        Type::insert(config('factories.type'));
     }
 }

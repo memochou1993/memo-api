@@ -12,7 +12,7 @@ class RecordsTableSeeder extends Seeder
      */
     public function run()
     {
-        $records = factory(Record::class, config('default.seeds.record.number'))->make();
+        $records = factory(Record::class, config('seeds.record.number'))->make();
 
         Record::insert($records->toArray());
     }

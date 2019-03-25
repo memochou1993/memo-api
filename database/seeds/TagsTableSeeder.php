@@ -12,7 +12,7 @@ class TagsTableSeeder extends Seeder
      */
     public function run()
     {
-        $tags = factory(Tag::class, config('default.seeds.tag.number'))->make();
+        $tags = factory(Tag::class, config('seeds.tag.number'))->make();
 
         Tag::insert($tags->toArray());
     }

@@ -12,8 +12,8 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        User::create(config('default.factories.user'));
+        User::create(config('factories.user'));
 
-        factory(User::class, config('default.seeds.user.number'))->create();
+        factory(User::class, config('seeds.user.number'))->create();
     }
 }
