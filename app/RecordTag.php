@@ -12,13 +12,4 @@ class RecordTag extends Model
      * @var string
      */
     protected $table = 'records_tags';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $guarded = [
-        'record_id', 'tag_id',
-    ];
 }
