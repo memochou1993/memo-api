@@ -14,4 +14,28 @@ class Record extends Model
     protected $fillable = [
         'title', 'content',
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\belongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\belongsTo
+     */
+    public function type()
+    {
+        return $this->belongsTo(Type::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
+     */
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'records_tags');
+    }
 }

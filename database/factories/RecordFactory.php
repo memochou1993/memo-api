@@ -6,6 +6,7 @@ $factory->define(App\Record::class, function (Faker $faker) {
     return [
         'title' => $faker->bothify('##??'),
         'content' => $faker->bothify('##??'),
+        'user_id' => $faker->numberBetween(1, config('seeds.user.number')),
         'type_id' => $faker->numberBetween(1, count(config('factories.type'))),
         'created_at'  => now()->subDays($faker->randomDigit())->toDateTimeString(),
         'updated_at'  => now()->subDays($faker->randomDigit())->toDateTimeString(),
