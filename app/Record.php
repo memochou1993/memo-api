@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Record extends Model
@@ -14,6 +15,22 @@ class Record extends Model
     protected $fillable = [
         'title', 'content',
     ];
+
+    /**
+     * @return \Illuminate\Support\Carbon
+     */
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->diffForHumans();
+    }
+
+    /**
+     * @return \Illuminate\Support\Carbon
+     */
+    public function getUpdatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->diffForHumans();
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\belongsTo
