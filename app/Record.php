@@ -13,24 +13,8 @@ class Record extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'content',
+        'title', 'content', 'private',
     ];
-
-    /**
-     * @return \Illuminate\Support\Carbon
-     */
-    public function getCreatedAtAttribute($value)
-    {
-        return Carbon::parse($value)->diffForHumans();
-    }
-
-    /**
-     * @return \Illuminate\Support\Carbon
-     */
-    public function getUpdatedAtAttribute($value)
-    {
-        return Carbon::parse($value)->diffForHumans();
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\belongsTo

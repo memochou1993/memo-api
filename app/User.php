@@ -39,22 +39,6 @@ class User extends Authenticatable
     ];
 
     /**
-     * @return \Illuminate\Support\Carbon
-     */
-    public function getCreatedAtAttribute($value)
-    {
-        return Carbon::parse($value)->diffForHumans();
-    }
-
-    /**
-     * @return \Illuminate\Support\Carbon
-     */
-    public function getUpdatedAtAttribute($value)
-    {
-        return Carbon::parse($value)->diffForHumans();
-    }
-
-    /**
      * @return \Illuminate\Database\Eloquent\Relations\hasMany
      */
     public function records()
