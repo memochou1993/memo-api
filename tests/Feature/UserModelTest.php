@@ -26,17 +26,16 @@ class UserModelTest extends TestCase
      */
     public function testHasManyRecords()
     {
-        $records = factory(Record::class, config('seeds.record.number'))->make();
+        $records = factory(Record::class, 10)->make();
 
-        factory(User::class, 1)->create()->each(
+        $user = factory(User::class)->create();
+        $user->each(
             function ($user) use ($records) {
                 $user->records()->saveMany($records);
             }
         );
 
-        $records = User::find(config('default.user.id'))->records()->get();
-
-        $this->assertCount(config('seeds.record.number'), $records->toArray());
+        $this->assertEquals(10, $user->records()->count());
     }
 
     /**
@@ -44,16 +43,15 @@ class UserModelTest extends TestCase
      */
     public function testHasManyTags()
     {
-        $tags = factory(Tag::class, config('seeds.tag.number'))->make();
+        $tags = factory(Tag::class, 10)->make();
 
-        factory(User::class, 1)->create()->each(
+        $user = factory(User::class)->create();
+        $user->each(
             function ($user) use ($tags) {
                 $user->tags()->saveMany($tags);
             }
         );
 
-        $tags = User::find(config('default.user.id'))->tags()->get();
-
-        $this->assertCount(config('seeds.tag.number'), $tags->toArray());
+        $this->assertEquals(10, $user->tags()->count());
     }
 }

@@ -6,6 +6,10 @@ return [
         'number' => 5,
     ],
 
+    'type' => [
+        'number' => 5,
+    ],
+
     'record' => [
         'number' => 100,
     ],
