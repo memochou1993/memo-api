@@ -20,8 +20,8 @@ class RecordResource extends JsonResource
             'content' => $this->content,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'users' => UserResource::collection($this->whenLoaded('users')),
-            'tags' => UserResource::collection($this->whenLoaded('tags')),
+            'user' => new UserResource($this->whenLoaded('user')),
+            'tags' => TagResource::collection($this->whenLoaded('tags')),
         ];
     }
 }
