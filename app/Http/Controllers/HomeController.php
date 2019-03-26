@@ -38,6 +38,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return Resource::collection($this->reposotory->getRecordsByUser(Auth::user()));
+        return view('home');
+        //return Resource::collection($this->reposotory->getRecordsByUser(Auth::user()));
     }
 }
