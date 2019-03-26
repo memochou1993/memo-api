@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Contracts\RecordInterface as Repository;
 use App\Http\Resources\RecordResource as Resource;
 
-class RecordController extends Controller
+class HomeController extends Controller
 {
     /**
      * @var \Illuminate\Http\Request
@@ -22,8 +22,6 @@ class RecordController extends Controller
     /**
      * Create a new controller instance.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Contracts\ProjectInterface  $reposotory
      * @return void
      */
     public function __construct(Request $request, Repository $reposotory)
@@ -34,12 +32,12 @@ class RecordController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Show the application dashboard.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index(User $user)
+    public function index()
     {
-        return Resource::collection($this->reposotory->getRecordsByUser($user));
+        return Resource::collection($this->reposotory->getRecordsByUser(Auth::user()));
     }
 }
