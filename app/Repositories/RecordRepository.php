@@ -29,6 +29,27 @@ class RecordRepository implements RecordInterface
      */
     public function getRecordsByUser(User $user)
     {
-        return $user->records()->with(['type', 'tags'])->paginate();
+        return $user->records()
+            ->with([
+                'type',
+                'tags',
+            ])
+            ->paginate();
+    }
+
+    /**
+     * @return \App\Record
+     */
+    public function getPublicRecordsByUser(User $user)
+    {
+        return $user->records()
+            ->where([
+                'private' => false,
+            ])
+            ->with([
+                'type',
+                'tags',
+            ])
+            ->paginate();
     }
 }

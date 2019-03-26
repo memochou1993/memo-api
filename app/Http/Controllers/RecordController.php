@@ -40,6 +40,6 @@ class RecordController extends Controller
      */
     public function index(User $user)
     {
-        return Resource::collection($this->reposotory->getRecordsByUser($user));
+        return Resource::collection($this->reposotory->getPublicRecordsByUser($user));
     }
 }

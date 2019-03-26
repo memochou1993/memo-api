@@ -18,6 +18,7 @@ class RecordResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'content' => $this->content,
+            'private' => (bool) $this->private,
             'created_at' => $this->created_at->diffForHumans(),
             'updated_at' => $this->updated_at->diffForHumans(),
             'user' => new UserResource($this->whenLoaded('user')),
