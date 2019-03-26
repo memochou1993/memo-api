@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Tag;
 use App\Type;
 use App\User;
 use App\Record;
@@ -25,7 +26,7 @@ class UserModelTest extends TestCase
      */
     public function testHasManyRecords()
     {
-        $records = factory(Record::class, 5)->make();
+        $records = factory(Record::class, config('seeds.record.number'))->make();
 
         factory(User::class, 1)->create()->each(
             function ($user) use ($records) {
@@ -33,8 +34,26 @@ class UserModelTest extends TestCase
             }
         );
 
-        $records = User::find(1)->records()->get();
+        $records = User::find(config('default.user.id'))->records()->get();
 
-        $this->assertCount(5, $records->toArray());
+        $this->assertCount(config('seeds.record.number'), $records->toArray());
+    }
+
+    /**
+     * @return void
+     */
+    public function testHasManyTags()
+    {
+        $tags = factory(Tag::class, config('seeds.tag.number'))->make();
+
+        factory(User::class, 1)->create()->each(
+            function ($user) use ($tags) {
+                $user->tags()->saveMany($tags);
+            }
+        );
+
+        $tags = User::find(config('default.user.id'))->tags()->get();
+
+        $this->assertCount(config('seeds.tag.number'), $tags->toArray());
     }
 }
