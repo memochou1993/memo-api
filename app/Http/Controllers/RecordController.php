@@ -2,84 +2,46 @@
 
 namespace App\Http\Controllers;
 
-use App\Record;
+use App\User;
 use Illuminate\Http\Request;
+use App\Contracts\RecordInterface as Repository;
+use App\Http\Resources\RecordResource as Resource;
 
 class RecordController extends Controller
 {
+    /**
+     * @var \Illuminate\Http\Request
+     */
+    protected $request;
+
+    /**
+     * @var \App\Contracts\ProjectInterface
+     */
+    protected $reposotory;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Contracts\ProjectInterface  $reposotory
+     * @return void
+     */
+    public function __construct(Request $request, Repository $reposotory)
+    {
+        parent::__construct();
+
+        $this->request = $request;
+
+        $this->reposotory = $reposotory;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(User $user)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Record  $record
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Record $record)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Record  $record
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Record $record)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Record  $record
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Record $record)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Record  $record
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Record $record)
-    {
-        //
+        return Resource::collection($this->reposotory->getRecordsByUser($user));
     }
 }

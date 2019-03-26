@@ -15,4 +15,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('records', 'RecordController');
+Route::get('/{user}', 'RecordController@index');
