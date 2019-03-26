@@ -12,4 +12,11 @@ class RecordTag extends Model
      * @var string
      */
     protected $table = 'records_tags';
+
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
 }
