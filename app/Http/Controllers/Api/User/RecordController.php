@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\User;
 
-use App\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Contracts\RecordInterface as Repository;
 use App\Http\Resources\RecordResource as Resource;
 
@@ -38,8 +39,8 @@ class RecordController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(User $user)
+    public function index()
     {
-        return Resource::collection($this->reposotory->getPublicRecordsByUser($user));
+        return Resource::collection($this->reposotory->getRecordsByUser(Auth::user()));
     }
 }
