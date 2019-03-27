@@ -22,6 +22,6 @@ Route::namespace('Api')->group(function () {
         //
     });
     Route::namespace('User')->group(function () {
-        Route::get('/users/{user}/records', 'RecordController@index');
+        Route::resource('users.records', 'RecordController')->except(['create', 'edit']);
     });
 });
