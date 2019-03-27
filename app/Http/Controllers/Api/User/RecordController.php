@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\User;
 
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -10,6 +11,11 @@ use App\Http\Resources\RecordResource as Resource;
 
 class RecordController extends Controller
 {
+    /**
+     * @var \App\User
+     */
+    protected $user;
+
     /**
      * @var \Illuminate\Http\Request
      */
@@ -29,6 +35,8 @@ class RecordController extends Controller
      */
     public function __construct(Request $request, Repository $reposotory)
     {
+        $this->user = Auth::guard('api')->user();
+
         $this->request = $request;
 
         $this->reposotory = $reposotory;
@@ -39,8 +47,14 @@ class RecordController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(User $user)
     {
-        return Resource::collection($this->reposotory->getRecordsByUser(Auth::user()));
+        $method = $this->user && $user->id === $this->user->id
+            ? 'getRecordsByUser'
+            : 'getPublicRecordsByUser';
+
+        $records = $this->reposotory->$method($user);
+
+        return Resource::collection($records);
     }
 }

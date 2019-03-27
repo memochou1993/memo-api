@@ -18,11 +18,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::namespace('Api')->group(function () {
-    // Route::namespace('User')->prefix('/users/me')->group(function () {
-    //     Route::get('/records', 'RecordController@index');
-    // });
-
-    Route::namespace('Plaza')->group(function () {
+    Route::middleware('auth:api')->group(function () {
+        //
+    });
+    Route::namespace('User')->group(function () {
         Route::get('/users/{user}/records', 'RecordController@index');
     });
 });
