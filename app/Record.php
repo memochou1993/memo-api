@@ -48,4 +48,16 @@ class Record extends Model
     {
         return $this->belongsToMany(Tag::class, 'records_tags');
     }
+
+    /**
+     * @param  array  $model
+     * @return $this
+     */
+    public function associate(array $model) {
+        foreach ($model as $key => $value) {
+            $this->$key()->associate($value);
+        }
+
+        return $this;
+    } 
 }

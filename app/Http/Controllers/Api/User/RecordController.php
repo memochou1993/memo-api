@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Record;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RecordRequest as Request;
 use App\Contracts\RecordInterface as Repository;
 use App\Http\Resources\RecordResource as Resource;
 
@@ -16,7 +16,7 @@ class RecordController extends Controller
     protected $user;
 
     /**
-     * @var \Illuminate\Http\Request
+     * @var \App\Http\Requests\RecordRequest
      */
     protected $request;
 
@@ -28,7 +28,7 @@ class RecordController extends Controller
     /**
      * Create a new controller instance.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\RecordRequest  $request
      * @param  \App\Contracts\RecordInterface  $reposotory
      * @return void
      */
@@ -60,12 +60,15 @@ class RecordController extends Controller
      */
     public function store()
     {
-        //
+        $record = $this->reposotory->storeRecord($this->user, $this->request);
+
+        return new Resource($record);
     }
 
     /**
      * Display a listing of the resource.
      *
+     * @param  \App\Record  $record
      * @return \App\Http\Resources\RecordResource
      */
     public function show(Record $record)

@@ -3,8 +3,10 @@
 namespace App\Repositories;
 
 use App\User;
+use App\Type;
 use App\Record;
 use App\Contracts\RecordInterface;
+use App\Http\Requests\RecordRequest as Request;
 
 class RecordRepository implements RecordInterface
 {
@@ -25,6 +27,7 @@ class RecordRepository implements RecordInterface
     }
 
     /**
+     * @param  \App\User  $user
      * @return \App\Record
      */
     public function getRecordsByUser(User $user)
@@ -38,6 +41,7 @@ class RecordRepository implements RecordInterface
     }
 
     /**
+     * @param  \App\User  $user
      * @return \App\Record
      */
     public function getPublicRecordsByUser(User $user)
@@ -54,6 +58,8 @@ class RecordRepository implements RecordInterface
     }
 
     /**
+     * @param  \App\User  $user
+     * @param  int  $id
      * @return \App\Record
      */
     public function getRecordByUser(User $user, int $id)
@@ -67,6 +73,8 @@ class RecordRepository implements RecordInterface
     }
 
     /**
+     * @param  \App\User  $user
+     * @param  int  $id
      * @return \App\Record
      */
     public function getPublicRecordByUser(User $user, int $id)
@@ -80,5 +88,23 @@ class RecordRepository implements RecordInterface
                 'tags',
             ])
             ->findOrFail($id);
+    }
+
+    /**
+     * @param  \App\User  $user
+     * @param  \App\Http\Requests\RecordRequest  $request
+     * @return \App\Record
+     */
+    public function storeRecord(User $user, Request $request)
+    {
+        $record = new Record($request->all());
+
+        $type = Type::find($request->type_id);
+
+        $record->associate(compact(['user', 'type']));
+
+        $record->save();
+
+        return $record;
     }
 }
