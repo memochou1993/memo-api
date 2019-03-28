@@ -2,7 +2,6 @@
 
 namespace App;
 
-use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Record extends Model
@@ -14,15 +13,6 @@ class Record extends Model
      */
     protected $fillable = [
         'title', 'content', 'private',
-    ];
-
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'user_id', 'type_id',
     ];
 
     /**
@@ -59,5 +49,5 @@ class Record extends Model
         }
 
         return $this;
-    } 
+    }
 }

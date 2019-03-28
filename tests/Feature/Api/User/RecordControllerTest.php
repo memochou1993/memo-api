@@ -48,7 +48,10 @@ class RecordControllerTest extends TestCase
             ->assertJsonCount(1, 'data')
             ->assertJsonStructure([
                 'data' => [
-                    collect($record)->keys()->toArray(),
+                    collect($record)->except([
+                        'user_id',
+                        'type_id',
+                    ])->keys()->toArray(),
                 ],
                 'links',
                 'meta',
@@ -74,7 +77,10 @@ class RecordControllerTest extends TestCase
         $response
             ->assertStatus(200)
             ->assertJsonStructure([
-                'data' => collect($record)->keys()->toArray(),
+                'data' => collect($record)->except([
+                    'user_id',
+                    'type_id',
+                ])->keys()->toArray(),
             ]);
     }
 }

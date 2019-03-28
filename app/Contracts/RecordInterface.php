@@ -3,7 +3,7 @@
 namespace App\Contracts;
 
 use App\User;
-use App\Http\Requests\RecordRequest as Request;
+use App\Record;
 
 interface RecordInterface
 {
@@ -35,8 +35,19 @@ interface RecordInterface
 
     /**
      * @param  \App\User  $user
-     * @param  \App\Http\Requests\RecordRequest  $request
      * @return \App\Record
      */
-    public function storeRecord(User $user, Request $request);
+    public function storeRecord(User $user);
+
+    /**
+     * @param  \App\Record  $record
+     * @return \App\Record
+     */
+    public function updateRecord(Record $record);
+
+    /**
+     * @param  \App\Record  $record
+     * @return \App\Record
+     */
+    public function destroyRecord(Record $record);
 }

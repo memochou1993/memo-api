@@ -60,7 +60,7 @@ class RecordController extends Controller
      */
     public function store()
     {
-        $record = $this->reposotory->storeRecord($this->user, $this->request);
+        $record = $this->reposotory->storeRecord($this->user);
 
         return new Resource($record);
     }
@@ -82,11 +82,14 @@ class RecordController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Record  $record
-     * @return \App\Http\Resources\RecordResource
      */
     public function update(Record $record)
     {
         $this->authorize('update', $record);
+
+        $record = $this->reposotory->updateRecord($record);
+
+        return new Resource($record);
     }
 
     /**
@@ -98,5 +101,9 @@ class RecordController extends Controller
     public function destroy(Record $record)
     {
         $this->authorize('delete', $record);
+
+        $record = $this->reposotory->destroyRecord($record);
+
+        return new Resource($record);
     }
 }
