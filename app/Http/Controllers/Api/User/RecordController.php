@@ -34,7 +34,7 @@ class RecordController extends Controller
      */
     public function __construct(Request $request, Repository $reposotory)
     {
-        $this->user = $this->user('api');
+        $this->user = $this->auth('api')->user();
 
         $this->request = $request;
 

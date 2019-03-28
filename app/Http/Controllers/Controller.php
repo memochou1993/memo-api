@@ -13,11 +13,11 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     /**
-     * @return \App\User
+     * @return \Illuminate\Support\Facades\Auth
      */
-    public function user($guard)
+    public function auth($guard)
     {
-        return Auth::guard($guard)->user();
+        return Auth::guard($guard);
     }
 
     /**
@@ -25,7 +25,7 @@ class Controller extends BaseController
      */
     public function check($guard, $user)
     {
-        $auth = Auth::guard($guard);
+        $auth = $this->auth($guard);
 
         if (! $auth->check()) {
             return false;
