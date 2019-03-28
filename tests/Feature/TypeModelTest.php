@@ -17,7 +17,7 @@ class TypeModelTest extends TestCase
     {
         parent::setUp();
 
-        factory(User::class, config('seeds.user.number'))->create();
+        //
     }
 
     /**
@@ -25,14 +25,12 @@ class TypeModelTest extends TestCase
      */
     public function testHasManyRecords()
     {
-        $records = factory(Record::class, 10)->make();
+        $records = factory(Record::class, 10)->make([
+            'user_id' => factory(User::class)->create()->id,
+        ]);
 
         $type = factory(Type::class)->create();
-        $type->each(
-            function ($type) use ($records) {
-                $type->records()->saveMany($records);
-            }
-        );
+        $type->records()->saveMany($records);
 
         $this->assertEquals(10, $type->records()->count());
     }

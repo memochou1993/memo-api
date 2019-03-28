@@ -18,7 +18,7 @@ class RecordModelTest extends TestCase
     {
         parent::setUp();
 
-        Type::insert(config('factories.type'));
+        //
     }
 
     /**
@@ -26,15 +26,12 @@ class RecordModelTest extends TestCase
      */
     public function testBelongsToUser()
     {
-        $record = factory(Record::class)->make();
+        $record = factory(Record::class)->make([
+            'user_id' => factory(User::class)->create()->id,
+            'type_id' => factory(Type::class)->create()->id,
+        ]);
 
-        factory(User::class)->create()->each(
-            function ($user) use ($record) {
-                $user->records()->save($record);
-            }
-        );
-
-        $this->assertEquals(1, Record::find(1)->user()->count());
+        $this->assertEquals(1, $record->user()->count());
     }
 
     /**
@@ -42,15 +39,12 @@ class RecordModelTest extends TestCase
      */
     public function testBelongsToType()
     {
-        $record = factory(Record::class)->make();
+        $record = factory(Record::class)->make([
+            'user_id' => factory(User::class)->create()->id,
+            'type_id' => factory(Type::class)->create()->id,
+        ]);
 
-        factory(User::class)->create()->each(
-            function ($user) use ($record) {
-                $user->records()->save($record);
-            }
-        );
-
-        $this->assertEquals(1, Record::find(1)->type()->count());
+        $this->assertEquals(1, $record->type()->count());
     }
 
     /**
@@ -58,27 +52,22 @@ class RecordModelTest extends TestCase
      */
     public function testBelongsToManyTags()
     {
-        $records = factory(Record::class, 10)->make();
+        $record = factory(Record::class)->make([
+            'type_id' => factory(Type::class)->create()->id,
+        ]);
         
         $tags = factory(Tag::class, 10)->make();
 
-        factory(User::class)->create()->each(
-            function ($user) use ($records, $tags) {
-                $user->records()->saveMany($records);
-                $user->tags()->saveMany($tags);
+        $user = factory(User::class)->create();
+        $user->records()->save($record);
+        $user->tags()->saveMany($tags);
+
+        $tags->each(
+            function ($tag) use ($record) {
+                $record->tags()->attach($tag->id);
             }
         );
 
-        $records->each(
-            function ($record) use ($tags) {
-                $tags->each(
-                    function ($tag) use ($record) {
-                        $record->tags()->attach($tag->id);
-                    }
-                );
-            }
-        );
-
-        $this->assertEquals(10, Record::find(1)->tags()->count());
+        $this->assertEquals(10, $record->tags()->count());
     }
 }
