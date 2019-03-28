@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,15 +11,8 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::namespace('User')->middleware('auth:api')->prefix('users/me')->group(function () {
+    Route::resource('records', 'RecordController')->except(['create', 'edit']);
 });
 
-Route::namespace('Api')->group(function () {
-    Route::middleware('auth:api')->group(function () {
-        //
-    });
-    Route::namespace('User')->group(function () {
-        Route::resource('users.records', 'RecordController')->except(['create', 'edit']);
-    });
-});
+Route::resource('users.records', 'RecordController')->only(['index', 'show']);
