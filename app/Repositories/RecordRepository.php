@@ -146,12 +146,10 @@ class RecordRepository implements RecordInterface
 
     /**
      * @param  \App\Record  $record
-     * @return \App\Record
+     * @return void
      */
     public function destroyRecord(Record $record)
     {
         $record->delete();
-dd($record);
-        return $this->getRecord($record->id);
     }
 }

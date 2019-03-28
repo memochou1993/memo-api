@@ -16,9 +16,9 @@ class CreateRecordTagsTable extends Migration
         Schema::create('records_tags', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('record_id')->unsigned();
-            $table->foreign('record_id')->references('id')->on('records');
+            $table->foreign('record_id')->references('id')->on('records')->onDelete('cascade');
             $table->bigInteger('tag_id')->unsigned();
-            $table->foreign('tag_id')->references('id')->on('tags');
+            $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
         });
     }
 

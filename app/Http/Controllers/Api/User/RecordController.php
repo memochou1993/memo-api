@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api\User;
 
+use App\User;
 use App\Record;
+use Laravel\Passport\Passport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RecordRequest as Request;
 use App\Contracts\RecordInterface as Repository;
@@ -34,7 +36,9 @@ class RecordController extends Controller
      */
     public function __construct(Request $request, Repository $reposotory)
     {
-        $this->user = $this->auth('api')->user();
+        $this->user = config('api.debug.enabled')
+            ? Passport::actingAs(User::find(config('api.debug.user.id')))
+            : $this->auth('api')->user(); 
 
         $this->request = $request;
 
@@ -104,6 +108,6 @@ class RecordController extends Controller
 
         $record = $this->reposotory->destroyRecord($record);
 
-        return new Resource($record);
+        return response(null, 204);
     }
 }
