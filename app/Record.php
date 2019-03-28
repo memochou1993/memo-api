@@ -17,6 +17,15 @@ class Record extends Model
     ];
 
     /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'user_id', 'type_id',
+    ];
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\belongsTo
      */
     public function user()
