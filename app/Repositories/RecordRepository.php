@@ -126,7 +126,7 @@ class RecordRepository implements RecordInterface
         $record->associate(compact(['user', 'type']));
         $record->save();
 
-        $record->tags()->sync(explode(',', $this->request->tags));
+        $record->tags()->sync($this->request->tag_ids);
 
         return $this->getRecord($record->id);
     }
@@ -139,7 +139,7 @@ class RecordRepository implements RecordInterface
     {
         $record->update($this->request->all());
 
-        $record->tags()->sync(explode(',', $this->request->tags));
+        $record->tags()->sync($this->request->tag_ids);
 
         return $this->getRecord($record->id);
     }

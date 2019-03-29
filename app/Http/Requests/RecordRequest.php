@@ -40,11 +40,16 @@ class RecordRequest extends FormRequest
                         'required',
                     ],
                     'private' => [
-                        'required',
                         'boolean',
                     ],
                     'type_id' => [
                         'required',
+                        'integer',
+                    ],
+                    'tag_ids' => [
+                        'array',
+                    ],
+                    'tag_ids.*' => [
                         'integer',
                     ],
                 ];
