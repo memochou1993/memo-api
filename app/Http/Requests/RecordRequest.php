@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ElementsInArray;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RecordRequest extends FormRequest
@@ -26,6 +27,14 @@ class RecordRequest extends FormRequest
         switch($this->method()) {
             case 'GET':
                 return [
+                    'relationships' => [
+                        new ElementsInArray([
+                            'user',
+                            'type',
+                            'tags',
+                        ]),
+                        'nullable',
+                    ],
                     'paginate' => [
                         'integer',
                         'min:1',
@@ -37,6 +46,14 @@ class RecordRequest extends FormRequest
             case 'PUT':
             case 'PATCH':
                 return [
+                    'relationships' => [
+                        new ElementsInArray([
+                            'user',
+                            'type',
+                            'tags',
+                        ]),
+                        'nullable',
+                    ],
                     'title' => [
                         'required',
                     ],

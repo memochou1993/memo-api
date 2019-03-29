@@ -38,7 +38,12 @@ class RecordRepository implements RecordInterface
 
         $this->record = $record;
 
-        $this->relationships = ['type', 'tags'];
+        $this->relationships = explode(
+            ',',
+            $this->request->relationships ?? 'user,type,tags'
+        );
+
+        $this->paginate = $this->request->paginate;
     }
 
     /**
@@ -48,7 +53,7 @@ class RecordRepository implements RecordInterface
     {
         return $this->record
             ->with($this->relationships)
-            ->paginate($this->request->paginate);
+            ->paginate($this->paginate);
     }
 
     /**
@@ -70,7 +75,7 @@ class RecordRepository implements RecordInterface
     {
         return $user->records()
             ->with($this->relationships)
-            ->paginate($this->request->paginate);
+            ->paginate($this->paginate);
     }
 
     /**
@@ -84,7 +89,7 @@ class RecordRepository implements RecordInterface
                 'private' => false,
             ])
             ->with($this->relationships)
-            ->paginate($this->request->paginate);
+            ->paginate($this->paginate);
     }
 
     /**
