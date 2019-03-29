@@ -12,43 +12,43 @@ return [
 
     'type' => [
         [
-            'name' => 'text'
+            'name' => 'text',
         ],
 
         [
-            'name' => 'url'
+            'name' => 'url',
         ],
         
         [
-            'name' => 'image'
+            'name' => 'image',
         ],
         
         [
-            'name' => 'video'
+            'name' => 'video',
         ],
         
         [
-            'name' => 'audio'
+            'name' => 'audio',
         ],
         
         [
-            'name' => 'pdf'
+            'name' => 'pdf',
         ],
         
         [
-            'name' => 'html'
+            'name' => 'html',
         ],
         
         [
-            'name' => 'markdown'
+            'name' => 'markdown',
         ],
         
         [
-            'name' => 'json'
+            'name' => 'json',
         ],
         
         [
-            'name' => 'coordinate'
+            'name' => 'coordinate',
         ],
     ],
 

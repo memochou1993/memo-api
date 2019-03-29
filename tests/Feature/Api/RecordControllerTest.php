@@ -15,34 +15,33 @@ class RecordControllerTest extends TestCase
 
     protected $user;
 
+    protected $type;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->user = factory(User::class)->create();
 
-        Type::insert(config('factories.type'));
+        $this->type = factory(Type::class)->create();
     }
 
     public function testIndex()
     {
-        $user = $this->user;
-
-        $record = factory(Record::class)->make([
+        $record = factory(Record::class)->create([
             'private' => false,
+            'user_id' => $this->user->id,
+            'type_id' => $this->type->id,
         ]);
-
-        $user->records()->save($record);
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->get(
-            "/api/users/{$user->id}/records"
+            "/api/users/{$this->user->id}/records"
         );
 
         $response
             ->assertStatus(200)
-            ->assertJsonCount(1, 'data')
             ->assertJsonStructure([
                 'data' => [
                     collect($record)->except([
@@ -57,18 +56,16 @@ class RecordControllerTest extends TestCase
 
     public function testShow()
     {
-        $user = $this->user;
-
-        $record = factory(Record::class)->make([
+        $record = factory(Record::class)->create([
             'private' => false,
+            'user_id' => $this->user->id,
+            'type_id' => $this->type->id,
         ]);
-
-        $user->records()->save($record);
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->get(
-            "/api/users/{$user->id}/records/{$record->id}"
+            "/api/users/{$this->user->id}/records/{$record->id}"
         );
 
         $response
@@ -83,18 +80,16 @@ class RecordControllerTest extends TestCase
 
     public function testCannotViewPrivate()
     {
-        $user = $this->user;
-
-        $record = factory(Record::class)->make([
+        $record = factory(Record::class)->create([
             'private' => true,
+            'user_id' => $this->user->id,
+            'type_id' => $this->type->id,
         ]);
-
-        $user->records()->save($record);
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->get(
-            "/api/users/{$user->id}/records/{$record->id}"
+            "/api/users/{$this->user->id}/records/{$record->id}"
         );
 
         $response
