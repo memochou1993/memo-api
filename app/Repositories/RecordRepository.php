@@ -48,7 +48,7 @@ class RecordRepository implements RecordInterface
     {
         return $this->record
             ->with($this->relationships)
-            ->get();
+            ->paginate($this->request->paginate);
     }
 
     /**
@@ -70,7 +70,7 @@ class RecordRepository implements RecordInterface
     {
         return $user->records()
             ->with($this->relationships)
-            ->paginate();
+            ->paginate($this->request->paginate);
     }
 
     /**
@@ -84,7 +84,7 @@ class RecordRepository implements RecordInterface
                 'private' => false,
             ])
             ->with($this->relationships)
-            ->paginate();
+            ->paginate($this->request->paginate);
     }
 
     /**

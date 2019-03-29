@@ -26,7 +26,11 @@ class RecordRequest extends FormRequest
         switch($this->method()) {
             case 'GET':
                 return [
-                    //
+                    'paginate' => [
+                        'integer',
+                        'min:1',
+                        'nullable',
+                    ],
                 ];
 
             case 'POST':
