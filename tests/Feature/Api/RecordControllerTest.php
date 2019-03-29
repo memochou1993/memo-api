@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Api;
 
+use App\Tag;
 use App\Type;
 use App\User;
 use App\Record;
@@ -24,6 +25,10 @@ class RecordControllerTest extends TestCase
         $this->user = factory(User::class)->create();
 
         $this->type = factory(Type::class)->create();
+
+        $this->tag = factory(Tag::class)->create([
+            'user_id' => $this->user->id,
+        ]);
     }
 
     public function testIndex()
@@ -33,11 +38,12 @@ class RecordControllerTest extends TestCase
             'user_id' => $this->user->id,
             'type_id' => $this->type->id,
         ]);
+        $record->tags()->sync($this->tag->id);
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->get(
-            "/api/users/{$this->user->id}/records"
+            "/api/users/{$this->user->id}/records?relationships=type,tags"
         );
 
         $response
@@ -47,7 +53,10 @@ class RecordControllerTest extends TestCase
                     collect($record)->except([
                         'user_id',
                         'type_id',
-                    ])->keys()->toArray(),
+                    ])->keys()->merge([
+                        'type',
+                        'tags',
+                    ])->toArray(),
                 ],
                 'links',
                 'meta',
@@ -61,11 +70,12 @@ class RecordControllerTest extends TestCase
             'user_id' => $this->user->id,
             'type_id' => $this->type->id,
         ]);
+        $record->tags()->sync($this->tag->id);
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->get(
-            "/api/users/{$this->user->id}/records/{$record->id}"
+            "/api/users/{$this->user->id}/records/{$record->id}?relationships=type,tags"
         );
 
         $response
@@ -74,7 +84,10 @@ class RecordControllerTest extends TestCase
                 'data' => collect($record)->except([
                     'user_id',
                     'type_id',
-                ])->keys()->toArray(),
+                ])->keys()->merge([
+                    'type',
+                    'tags',
+                ])->toArray(),
             ]);
     }
 
@@ -85,6 +98,7 @@ class RecordControllerTest extends TestCase
             'user_id' => $this->user->id,
             'type_id' => $this->type->id,
         ]);
+        $record->tags()->sync($this->tag->id);
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',

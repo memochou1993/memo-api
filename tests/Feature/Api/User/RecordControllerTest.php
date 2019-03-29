@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Api\User;
 
+use App\Tag;
 use App\Type;
 use App\User;
 use App\Record;
@@ -18,6 +19,10 @@ class RecordControllerTest extends TestCase
 
     protected $type;
 
+    protected $record;
+
+    protected $tag;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -26,21 +31,29 @@ class RecordControllerTest extends TestCase
 
         $this->type = factory(Type::class)->create();
 
-        Passport::actingAs($this->user);
-    }
-
-    public function testIndex()
-    {
-        $record = factory(Record::class)->create([
+        $this->record = factory(Record::class)->make([
             'private' => true,
             'user_id' => $this->user->id,
             'type_id' => $this->type->id,
         ]);
 
+        $this->tag = factory(Tag::class)->create([
+            'user_id' => $this->user->id,
+        ]);
+
+        Passport::actingAs($this->user);
+    }
+
+    public function testIndex()
+    {
+        $record = $this->record;
+        $record->save();
+        $record->tags()->sync($this->tag->id);
+
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->get(
-            "/api/users/me/records"
+            "/api/users/me/records?relationships=type,tags"
         );
 
         $response
@@ -50,7 +63,10 @@ class RecordControllerTest extends TestCase
                     collect($record)->except([
                         'user_id',
                         'type_id',
-                    ])->keys()->toArray(),
+                    ])->keys()->merge([
+                        'type',
+                        'tags',
+                    ])->toArray(),
                 ],
                 'links',
                 'meta',
@@ -59,17 +75,17 @@ class RecordControllerTest extends TestCase
 
     public function testStore()
     {
-        $record = factory(Record::class)->make([
-            'private' => true,
-            'user_id' => $this->user->id,
-            'type_id' => $this->type->id,
-        ]);
+        $record = $this->record;
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->post(
-            "/api/users/me/records",
-            $record->toArray()
+            "/api/users/me/records?relationships=type,tags",
+            collect($record)->merge([
+                'tag_ids' => [
+                    $this->tag->id,
+                ],
+            ])->toArray()
         );
 
         $response
@@ -78,22 +94,23 @@ class RecordControllerTest extends TestCase
                 'data' => collect($record)->except([
                     'user_id',
                     'type_id',
-                ])->keys()->toArray(),
+                ])->keys()->merge([
+                    'type',
+                    'tags',
+                ])->toArray(),
             ]);
     }
 
     public function testShow()
     {
-        $record = factory(Record::class)->create([
-            'private' => true,
-            'user_id' => $this->user->id,
-            'type_id' => $this->type->id,
-        ]);
+        $record = $this->record;
+        $record->save();
+        $record->tags()->sync($this->tag->id);
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->get(
-            "/api/users/me/records/{$record->id}"
+            "/api/users/me/records/{$record->id}?relationships=type,tags"
         );
 
         $response
@@ -102,23 +119,28 @@ class RecordControllerTest extends TestCase
                 'data' => collect($record)->except([
                     'user_id',
                     'type_id',
-                ])->keys()->toArray(),
+                ])->keys()->merge([
+                    'type',
+                    'tags',
+                ])->toArray(),
             ]);
     }
 
     public function testUpdate()
     {
-        $record = factory(Record::class)->create([
-            'private' => true,
-            'user_id' => $this->user->id,
-            'type_id' => $this->type->id,
-        ]);
+        $record = $this->record;
+        $record->save();
+        $record->tags()->sync($this->tag->id);
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->patch(
-            "/api/users/me/records/{$record->id}",
-            $record->toArray()
+            "/api/users/me/records/{$record->id}?relationships=type,tags",
+            collect($record)->merge([
+                'tag_ids' => [
+                    $this->tag->id,
+                ],
+            ])->toArray()
         );
 
         $response
@@ -127,17 +149,18 @@ class RecordControllerTest extends TestCase
                 'data' => collect($record)->except([
                     'user_id',
                     'type_id',
-                ])->keys()->toArray(),
+                ])->keys()->merge([
+                    'type',
+                    'tags',
+                ])->toArray(),
             ]);
     }
 
     public function testDestroy()
     {
-        $record = factory(Record::class)->create([
-            'private' => true,
-            'user_id' => $this->user->id,
-            'type_id' => $this->type->id,
-        ]);
+        $record = $this->record;
+        $record->save();
+        $record->tags()->sync($this->tag->id);
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
