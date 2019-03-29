@@ -13,11 +13,24 @@ class TypeModelTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected $user;
+
+    protected $type;
+
+    protected $record;
+
     protected function setUp(): void
     {
         parent::setUp();
 
-        //
+        $this->user = factory(User::class)->create();
+
+        $this->type = factory(Type::class)->create();
+
+        $this->record = factory(Record::class)->create([
+            'user_id' => $this->user->id,
+            'type_id' => $this->type->id,
+        ]);
     }
 
     /**
@@ -25,13 +38,8 @@ class TypeModelTest extends TestCase
      */
     public function testHasManyRecords()
     {
-        $records = factory(Record::class, 10)->make([
-            'user_id' => factory(User::class)->create()->id,
-        ]);
+        $type = $this->type;
 
-        $type = factory(Type::class)->create();
-        $type->records()->saveMany($records);
-
-        $this->assertEquals(10, $type->records()->count());
+        $this->assertEquals(1, $type->records()->count());
     }
 }

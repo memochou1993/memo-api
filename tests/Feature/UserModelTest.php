@@ -14,11 +14,30 @@ class UserModelTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected $user;
+
+    protected $type;
+
+    protected $record;
+
+    protected $tag;
+
     protected function setUp(): void
     {
         parent::setUp();
 
-        //
+        $this->user = factory(User::class)->create();
+
+        $this->type = factory(Type::class)->create();
+
+        $this->record = factory(Record::class)->create([
+            'user_id' => $this->user->id,
+            'type_id' => $this->type->id,
+        ]);
+
+        $this->tag = factory(Tag::class)->create([
+            'user_id' => $this->user->id,
+        ]);
     }
 
     /**
@@ -26,14 +45,9 @@ class UserModelTest extends TestCase
      */
     public function testHasManyRecords()
     {
-        $records = factory(Record::class, 10)->make([
-            'type_id' => factory(Type::class)->create()->id,
-        ]);
+        $user = $this->user;
 
-        $user = factory(User::class)->create();
-        $user->records()->saveMany($records);
-
-        $this->assertEquals(10, $user->records()->count());
+        $this->assertEquals(1, $user->records()->count());
     }
 
     /**
@@ -41,11 +55,8 @@ class UserModelTest extends TestCase
      */
     public function testHasManyTags()
     {
-        $tags = factory(Tag::class, 10)->make();
+        $user = $this->user;
 
-        $user = factory(User::class)->create();
-        $user->tags()->saveMany($tags);
-
-        $this->assertEquals(10, $user->tags()->count());
+        $this->assertEquals(1, $user->tags()->count());
     }
 }

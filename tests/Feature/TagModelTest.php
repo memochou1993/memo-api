@@ -6,6 +6,7 @@ use App\Tag;
 use App\Type;
 use App\User;
 use App\Record;
+use App\RecordTag;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,11 +15,37 @@ class TagModelTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected $user;
+
+    protected $type;
+
+    protected $record;
+
+    protected $tag;
+
+    protected $record_tag;
+
     protected function setUp(): void
     {
         parent::setUp();
 
-        //
+        $this->user = factory(User::class)->create();
+
+        $this->type = factory(Type::class)->create();
+
+        $this->record = factory(Record::class)->create([
+            'user_id' => $this->user->id,
+            'type_id' => $this->type->id,
+        ]);
+
+        $this->tag = factory(Tag::class)->create([
+            'user_id' => $this->user->id,
+        ]);
+
+        $this->record_tag = factory(RecordTag::class)->create([
+            'record_id' => $this->record->id,
+            'tag_id' => $this->tag->id,
+        ]);
     }
 
     /**
@@ -26,9 +53,7 @@ class TagModelTest extends TestCase
      */
     public function testBelongsToUser()
     {
-        $tag = factory(Tag::class)->create([
-            'user_id' => factory(User::class)->create()->id,
-        ]);
+        $tag = $this->tag;
 
         $this->assertEquals(1, $tag->user()->count());
     }
@@ -38,24 +63,8 @@ class TagModelTest extends TestCase
      */
     public function testBelongsToManyRecords()
     {
-        $tag = factory(Tag::class)->make();
+        $tag = $this->tag;
 
-        $type = factory(Type::class)->create();
-
-        $records = factory(Record::class, 10)->make([
-            'type_id' => $type->id,
-        ]);
-
-        $user = factory(User::class)->create();
-        $user->tags()->save($tag);
-        $user->records()->saveMany($records);
-
-        $records->each(
-            function ($record) use ($tag) {
-                $tag->records()->attach($record->id);
-            }
-        );
-
-        $this->assertEquals(10, $tag->records()->count());
+        $this->assertEquals(1, $tag->records()->count());
     }
 }
