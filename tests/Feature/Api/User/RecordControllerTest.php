@@ -16,26 +16,26 @@ class RecordControllerTest extends TestCase
 
     protected $user;
 
+    protected $type;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->user = factory(User::class)->create();
 
-        Passport::actingAs($this->user);
+        $this->type = factory(Type::class)->create();
 
-        Type::insert(config('factories.type'));
+        Passport::actingAs($this->user);
     }
 
     public function testIndex()
     {
-        $user = $this->user;
-
-        $record = factory(Record::class)->make([
+        $record = factory(Record::class)->create([
             'private' => true,
+            'user_id' => $this->user->id,
+            'type_id' => $this->type->id,
         ]);
-    
-        $user->records()->save($record);
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
@@ -45,7 +45,6 @@ class RecordControllerTest extends TestCase
 
         $response
             ->assertStatus(200)
-            ->assertJsonCount(1, 'data')
             ->assertJsonStructure([
                 'data' => [
                     collect($record)->except([
@@ -58,15 +57,38 @@ class RecordControllerTest extends TestCase
             ]);
     }
 
-    public function testShow()
+    public function testStore()
     {
-        $user = $this->user;
-
         $record = factory(Record::class)->make([
             'private' => true,
+            'user_id' => $this->user->id,
+            'type_id' => $this->type->id,
         ]);
 
-        $user->records()->save($record);
+        $response = $this->withHeaders([
+            'Accept' => 'application/json',
+        ])->post(
+            "/api/users/me/records",
+            $record->toArray()
+        );
+
+        $response
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'data' => collect($record)->except([
+                    'user_id',
+                    'type_id',
+                ])->keys()->toArray(),
+            ]);
+    }
+
+    public function testShow()
+    {
+        $record = factory(Record::class)->create([
+            'private' => true,
+            'user_id' => $this->user->id,
+            'type_id' => $this->type->id,
+        ]);
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
@@ -82,5 +104,48 @@ class RecordControllerTest extends TestCase
                     'type_id',
                 ])->keys()->toArray(),
             ]);
+    }
+
+    public function testUpdate()
+    {
+        $record = factory(Record::class)->create([
+            'private' => true,
+            'user_id' => $this->user->id,
+            'type_id' => $this->type->id,
+        ]);
+
+        $response = $this->withHeaders([
+            'Accept' => 'application/json',
+        ])->patch(
+            "/api/users/me/records/{$record->id}",
+            $record->toArray()
+        );
+
+        $response
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'data' => collect($record)->except([
+                    'user_id',
+                    'type_id',
+                ])->keys()->toArray(),
+            ]);
+    }
+
+    public function testDestroy()
+    {
+        $record = factory(Record::class)->create([
+            'private' => true,
+            'user_id' => $this->user->id,
+            'type_id' => $this->type->id,
+        ]);
+
+        $response = $this->withHeaders([
+            'Accept' => 'application/json',
+        ])->delete(
+            "/api/users/me/records/{$record->id}"
+        );
+
+        $response
+            ->assertStatus(204);
     }
 }
