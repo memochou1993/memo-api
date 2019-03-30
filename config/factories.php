@@ -32,7 +32,15 @@ return [
         ],
         
         [
-            'name' => 'pdf',
+            'name' => 'file',
+        ],
+        
+        [
+            'name' => 'mood',
+        ],
+        
+        [
+            'name' => 'milestone',
         ],
         
         [

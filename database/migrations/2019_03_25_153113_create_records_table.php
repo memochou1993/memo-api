@@ -15,6 +15,7 @@ class CreateRecordsTable extends Migration
     {
         Schema::create('records', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->dateTime('date')->useCurrent();
             $table->string('title');
             $table->text('content');
             $table->boolean('private')->default(true);

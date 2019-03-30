@@ -4,6 +4,7 @@ use Faker\Generator as Faker;
 
 $factory->define(App\Record::class, function (Faker $faker) {
     return [
+        'date' => $faker->dateTime,
         'title' => $faker->sentence,
         'content' => $faker->paragraph,
         'private' => $faker->boolean,

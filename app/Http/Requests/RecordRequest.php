@@ -46,13 +46,8 @@ class RecordRequest extends FormRequest
             case 'PUT':
             case 'PATCH':
                 return [
-                    'relationships' => [
-                        new ElementsInArray([
-                            'user',
-                            'type',
-                            'tags',
-                        ]),
-                        'nullable',
+                    'date' => [
+                        'date',
                     ],
                     'title' => [
                         'required',
@@ -72,6 +67,14 @@ class RecordRequest extends FormRequest
                     ],
                     'tag_ids.*' => [
                         'integer',
+                    ],
+                    'relationships' => [
+                        new ElementsInArray([
+                            'user',
+                            'type',
+                            'tags',
+                        ]),
+                        'nullable',
                     ],
                 ];
 

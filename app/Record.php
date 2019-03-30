@@ -12,7 +12,7 @@ class Record extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'content', 'private',
+        'date', 'title', 'content', 'private',
     ];
 
     /**
