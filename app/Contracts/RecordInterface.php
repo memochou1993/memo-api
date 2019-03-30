@@ -8,6 +8,16 @@ use App\Record;
 interface RecordInterface
 {
     /**
+     * @return \App\Record
+     */
+    public function getRecords();
+
+    /**
+     * @return \App\Record
+     */
+    public function getRecord();
+
+    /**
      * @param  \App\User  $user
      * @return \App\Record
      */
@@ -15,16 +25,16 @@ interface RecordInterface
 
     /**
      * @param  \App\User  $user
-     * @return \App\Record
-     */
-    public function getPublicRecordsByUser(User $user);
-
-    /**
-     * @param  \App\User  $user
      * @param  int  $id
      * @return \App\Record
      */
     public function getRecordByUser(User $user, int $id);
+
+    /**
+     * @param  \App\User  $user
+     * @return \App\Record
+     */
+    public function getPublicRecordsByUser(User $user);
 
     /**
      * @param  \App\User  $user

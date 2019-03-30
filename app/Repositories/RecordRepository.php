@@ -57,6 +57,7 @@ class RecordRepository implements RecordInterface
     {
         return $this->record
             ->with($this->relationships)
+            ->orderBy('date', 'desc')
             ->paginate($this->paginate);
     }
 
@@ -79,20 +80,7 @@ class RecordRepository implements RecordInterface
     {
         return $user->records()
             ->with($this->relationships)
-            ->paginate($this->paginate);
-    }
-
-    /**
-     * @param  \App\User  $user
-     * @return \App\Record
-     */
-    public function getPublicRecordsByUser(User $user)
-    {
-        return $user->records()
-            ->where([
-                'private' => false,
-            ])
-            ->with($this->relationships)
+            ->orderBy('date', 'desc')
             ->paginate($this->paginate);
     }
 
@@ -106,6 +94,21 @@ class RecordRepository implements RecordInterface
         return $user->records()
             ->with($this->relationships)
             ->findOrFail($id);
+    }
+
+    /**
+     * @param  \App\User  $user
+     * @return \App\Record
+     */
+    public function getPublicRecordsByUser(User $user)
+    {
+        return $user->records()
+            ->where([
+                'private' => false,
+            ])
+            ->with($this->relationships)
+            ->orderBy('date', 'desc')
+            ->paginate($this->paginate);
     }
 
     /**

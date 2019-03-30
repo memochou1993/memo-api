@@ -16,7 +16,7 @@ class RecordResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'date' => $this->date,
+            'date' => $this->date->diffForHumans(),
             'title' => $this->title,
             'content' => $this->content,
             'private' => (bool) $this->private,

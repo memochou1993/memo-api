@@ -1,6 +1,7 @@
 <?php
 
 use Faker\Generator as Faker;
+use Lcobucci\JWT\Signer\Rsa\Sha256;
 
 $factory->define(App\Record::class, function (Faker $faker) {
     return [
