@@ -26,6 +26,11 @@ class RecordRepository implements RecordInterface
     protected $relationships;
 
     /**
+     * @var int
+     */
+    protected $paginate;
+
+    /**
      * Create a new repository instance.
      *
      * @param  \App\Http\Requests\RecordRequest  $request
@@ -38,10 +43,9 @@ class RecordRepository implements RecordInterface
 
         $this->record = $record;
 
-        $this->relationships = explode(
-            ',',
-            $this->request->relationships ?? 'user,type,tags'
-        );
+        $this->relationships = $this->request->relationships
+            ? explode(',', $this->request->relationships)
+            : [];
 
         $this->paginate = $this->request->paginate;
     }
