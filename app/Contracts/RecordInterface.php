@@ -13,9 +13,10 @@ interface RecordInterface
     public function getRecords();
 
     /**
+     * @param  int  $id
      * @return \App\Record
      */
-    public function getRecord();
+    public function getRecord(int $id);
 
     /**
      * @param  \App\User  $user
