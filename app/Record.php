@@ -2,10 +2,13 @@
 
 namespace App;
 
+use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Model;
 
 class Record extends Model
 {
+    use Searchable;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -23,6 +26,16 @@ class Record extends Model
     protected $dates = [
         'date',
     ];
+
+    /**
+     * Determine if the model should be searchable.
+     *
+     * @return bool
+     */
+    public function shouldBeSearchable()
+    {
+        return ! $this->private;
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\belongsTo
