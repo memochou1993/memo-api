@@ -46,6 +46,16 @@ class RecordController extends Controller
     }
 
     /**
+     * @return \App\Http\Resources\RecordResource
+     */
+    public function search()
+    {
+        $records = $this->reposotory->searchRecordsByUser($this->user);
+
+        return Resource::collection($records);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \App\Http\Resources\RecordResource

@@ -28,16 +28,6 @@ class Record extends Model
     ];
 
     /**
-     * Determine if the model should be searchable.
-     *
-     * @return bool
-     */
-    public function shouldBeSearchable()
-    {
-        return ! $this->private;
-    }
-
-    /**
      * @return \Illuminate\Database\Eloquent\Relations\belongsTo
      */
     public function user()

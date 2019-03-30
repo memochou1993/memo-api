@@ -21,6 +21,11 @@ class RecordRepository implements RecordInterface
     protected $record;
 
     /**
+     * @var string
+     */
+    protected $q;
+
+    /**
      * @var array
      */
     protected $relationships;
@@ -43,6 +48,8 @@ class RecordRepository implements RecordInterface
 
         $this->record = $record;
 
+        $this->q = $this->request->q;
+
         $this->relationships = $this->request->relationships
             ? explode(',', $this->request->relationships)
             : [];
@@ -53,9 +60,25 @@ class RecordRepository implements RecordInterface
     /**
      * @return \App\Record
      */
-    public function getRecords()
+    public function searchRecords()
     {
         return $this->record
+            ->search($this->q)
+            ->get();
+    }
+
+    /**
+     * @return \App\Record
+     */
+    public function getRecords()
+    {
+        $q = $this->q;
+
+        return $this->record
+            ->where(function ($query) use ($q) {
+                $query->where('title', 'like', "%{$q}%")
+                    ->orWhere('content', 'like', "%{$q}%");
+            })
             ->with($this->relationships)
             ->orderBy('date', 'desc')
             ->paginate($this->paginate);
@@ -76,9 +99,27 @@ class RecordRepository implements RecordInterface
      * @param  \App\User  $user
      * @return \App\Record
      */
+    public function searchRecordsByUser(User $user)
+    {
+        return $this->record
+            ->search($this->q)
+            ->where('user_id', $user->id)
+            ->get();
+    }
+
+    /**
+     * @param  \App\User  $user
+     * @return \App\Record
+     */
     public function getRecordsByUser(User $user)
     {
+        $q = $this->q;
+
         return $user->records()
+            ->where(function ($query) use ($q) {
+                $query->where('title', 'like', "%{$q}%")
+                    ->orWhere('content', 'like', "%{$q}%");
+            })
             ->with($this->relationships)
             ->orderBy('date', 'desc')
             ->paginate($this->paginate);
@@ -100,12 +141,29 @@ class RecordRepository implements RecordInterface
      * @param  \App\User  $user
      * @return \App\Record
      */
+    public function searchPublicRecordsByUser(User $user)
+    {
+        return $this->record
+            ->search($this->q)
+            ->where('private', 0)
+            ->where('user_id', $user->id)
+            ->get();
+    }
+
+    /**
+     * @param  \App\User  $user
+     * @return \App\Record
+     */
     public function getPublicRecordsByUser(User $user)
     {
+        $q = $this->q;
+
         return $user->records()
-            ->where([
-                'private' => false,
-            ])
+            ->where('private', false)
+            ->where(function ($query) use ($q) {
+                $query->where('title', 'like', "%{$q}%")
+                    ->orWhere('content', 'like', "%{$q}%");
+            })
             ->with($this->relationships)
             ->orderBy('date', 'desc')
             ->paginate($this->paginate);
@@ -119,9 +177,7 @@ class RecordRepository implements RecordInterface
     public function getPublicRecordByUser(User $user, int $id)
     {
         return $user->records()
-            ->where([
-                'private' => false,
-            ])
+            ->where('private', false)
             ->with($this->relationships)
             ->findOrFail($id);
     }

@@ -19,8 +19,12 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::namespace('User')->middleware('auth:api')->prefix('users/me')->group(function () {
+    Route::get('records/search', 'RecordController@search');
     Route::resource('records', 'RecordController')->except(['create', 'edit']);
 });
 
+Route::get('users/search', 'UserController@search');
 Route::resource('users', 'UserController')->except(['create', 'edit']);
+
+Route::get('users/{user}/records/search', 'RecordController@search');
 Route::resource('users.records', 'RecordController')->only(['index', 'show']);

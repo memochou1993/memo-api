@@ -10,6 +10,11 @@ interface RecordInterface
     /**
      * @return \App\Record
      */
+    public function searchRecords();
+
+    /**
+     * @return \App\Record
+     */
     public function getRecords();
 
     /**
@@ -17,6 +22,12 @@ interface RecordInterface
      * @return \App\Record
      */
     public function getRecord(int $id);
+
+    /**
+     * @param  \App\User  $user
+     * @return \App\Record
+     */
+    public function searchRecordsByUser(User $user);
 
     /**
      * @param  \App\User  $user
@@ -30,6 +41,12 @@ interface RecordInterface
      * @return \App\Record
      */
     public function getRecordByUser(User $user, int $id);
+
+    /**
+     * @param  \App\User  $user
+     * @return \App\Record
+     */
+    public function searchPublicRecordsByUser(User $user);
 
     /**
      * @param  \App\User  $user
