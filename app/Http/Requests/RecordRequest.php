@@ -27,7 +27,7 @@ class RecordRequest extends FormRequest
         switch($this->method()) {
             case 'GET':
                 return [
-                    'relationships' => [
+                    'with' => [
                         new ElementsInArray([
                             'user',
                             'type',
@@ -68,7 +68,7 @@ class RecordRequest extends FormRequest
                     'tag_ids.*' => [
                         'integer',
                     ],
-                    'relationships' => [
+                    'with' => [
                         new ElementsInArray([
                             'user',
                             'type',

@@ -43,7 +43,7 @@ class RecordControllerTest extends TestCase
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->get(
-            "/api/users/{$this->user->id}/records?relationships=type,tags"
+            "/api/users/{$this->user->id}/records?with=type,tags"
         );
 
         $response
@@ -75,7 +75,7 @@ class RecordControllerTest extends TestCase
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->get(
-            "/api/users/{$this->user->id}/records/{$record->id}?relationships=type,tags"
+            "/api/users/{$this->user->id}/records/{$record->id}?with=type,tags"
         );
 
         $response

@@ -53,7 +53,7 @@ class RecordControllerTest extends TestCase
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->get(
-            "/api/users/me/records?relationships=type,tags"
+            "/api/users/me/records?with=type,tags"
         );
 
         $response
@@ -80,7 +80,7 @@ class RecordControllerTest extends TestCase
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->post(
-            "/api/users/me/records?relationships=type,tags",
+            "/api/users/me/records?with=type,tags",
             collect($record)->merge([
                 'tag_ids' => [
                     $this->tag->id,
@@ -110,7 +110,7 @@ class RecordControllerTest extends TestCase
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->get(
-            "/api/users/me/records/{$record->id}?relationships=type,tags"
+            "/api/users/me/records/{$record->id}?with=type,tags"
         );
 
         $response
@@ -135,7 +135,7 @@ class RecordControllerTest extends TestCase
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->patch(
-            "/api/users/me/records/{$record->id}?relationships=type,tags",
+            "/api/users/me/records/{$record->id}?with=type,tags",
             collect($record)->merge([
                 'tag_ids' => [
                     $this->tag->id,
