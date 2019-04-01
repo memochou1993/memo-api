@@ -36,10 +36,6 @@ return [
         ],
         
         [
-            'name' => 'mood',
-        ],
-        
-        [
             'name' => 'milestone',
         ],
         
