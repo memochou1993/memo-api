@@ -79,6 +79,9 @@ class RecordRepository implements RecordInterface
                 $query->where('title', 'like', "%{$q}%")
                     ->orWhere('content', 'like', "%{$q}%");
             })
+            ->orWhereHas('tags', function ($query) use ($q) {
+                $query->where('name', 'like', "%{$q}%");
+            })
             ->with($this->with)
             ->orderBy('date', 'desc')
             ->paginate($this->paginate);
@@ -119,6 +122,9 @@ class RecordRepository implements RecordInterface
             ->where(function ($query) use ($q) {
                 $query->where('title', 'like', "%{$q}%")
                     ->orWhere('content', 'like', "%{$q}%");
+            })
+            ->orWhereHas('tags', function ($query) use ($q) {
+                $query->where('name', 'like', "%{$q}%");
             })
             ->with($this->with)
             ->orderBy('date', 'desc')
@@ -163,6 +169,9 @@ class RecordRepository implements RecordInterface
             ->where(function ($query) use ($q) {
                 $query->where('title', 'like', "%{$q}%")
                     ->orWhere('content', 'like', "%{$q}%");
+            })
+            ->orWhereHas('tags', function ($query) use ($q) {
+                $query->where('name', 'like', "%{$q}%");
             })
             ->with($this->with)
             ->orderBy('date', 'desc')
