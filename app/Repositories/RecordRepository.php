@@ -77,10 +77,10 @@ class RecordRepository implements RecordInterface
         return $this->record
             ->where(function ($query) use ($q) {
                 $query->where('title', 'like', "%{$q}%")
-                    ->orWhere('content', 'like', "%{$q}%");
-            })
-            ->orWhereHas('tags', function ($query) use ($q) {
-                $query->where('name', 'like', "%{$q}%");
+                    ->orWhere('content', 'like', "%{$q}%")
+                    ->orWhereHas('tags', function ($query) use ($q) {
+                        $query->where('name', 'like', "%{$q}%");
+                    });
             })
             ->with($this->with)
             ->orderBy('date', 'desc')
@@ -121,10 +121,10 @@ class RecordRepository implements RecordInterface
         return $user->records()
             ->where(function ($query) use ($q) {
                 $query->where('title', 'like', "%{$q}%")
-                    ->orWhere('content', 'like', "%{$q}%");
-            })
-            ->orWhereHas('tags', function ($query) use ($q) {
-                $query->where('name', 'like', "%{$q}%");
+                    ->orWhere('content', 'like', "%{$q}%")
+                    ->orWhereHas('tags', function ($query) use ($q) {
+                        $query->where('name', 'like', "%{$q}%");
+                    });
             })
             ->with($this->with)
             ->orderBy('date', 'desc')
@@ -168,10 +168,10 @@ class RecordRepository implements RecordInterface
             ->where('private', false)
             ->where(function ($query) use ($q) {
                 $query->where('title', 'like', "%{$q}%")
-                    ->orWhere('content', 'like', "%{$q}%");
-            })
-            ->orWhereHas('tags', function ($query) use ($q) {
-                $query->where('name', 'like', "%{$q}%");
+                    ->orWhere('content', 'like', "%{$q}%")
+                    ->orWhereHas('tags', function ($query) use ($q) {
+                        $query->where('name', 'like', "%{$q}%");
+                    });
             })
             ->with($this->with)
             ->orderBy('date', 'desc')
