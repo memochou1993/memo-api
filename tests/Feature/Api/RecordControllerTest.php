@@ -3,7 +3,6 @@
 namespace Tests\Feature\Api;
 
 use App\Tag;
-use App\Type;
 use App\User;
 use App\Record;
 use Tests\TestCase;
@@ -16,15 +15,11 @@ class RecordControllerTest extends TestCase
 
     protected $user;
 
-    protected $type;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->user = factory(User::class)->create();
-
-        $this->type = factory(Type::class)->create();
 
         $this->tag = factory(Tag::class)->create([
             'user_id' => $this->user->id,
@@ -36,14 +31,13 @@ class RecordControllerTest extends TestCase
         $record = factory(Record::class)->create([
             'private' => false,
             'user_id' => $this->user->id,
-            'type_id' => $this->type->id,
         ]);
         $record->tags()->sync($this->tag->id);
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->get(
-            "/api/users/{$this->user->id}/records?with=type,tags"
+            "/api/users/{$this->user->id}/records?with=tags"
         );
 
         $response
@@ -52,9 +46,7 @@ class RecordControllerTest extends TestCase
                 'data' => [
                     collect($record)->except([
                         'user_id',
-                        'type_id',
                     ])->keys()->merge([
-                        'type',
                         'tags',
                     ])->toArray(),
                 ],
@@ -68,14 +60,13 @@ class RecordControllerTest extends TestCase
         $record = factory(Record::class)->create([
             'private' => false,
             'user_id' => $this->user->id,
-            'type_id' => $this->type->id,
         ]);
         $record->tags()->sync($this->tag->id);
 
         $response = $this->withHeaders([
             'Accept' => 'application/json',
         ])->get(
-            "/api/users/{$this->user->id}/records/{$record->id}?with=type,tags"
+            "/api/users/{$this->user->id}/records/{$record->id}?with=tags"
         );
 
         $response
@@ -83,9 +74,7 @@ class RecordControllerTest extends TestCase
             ->assertJsonStructure([
                 'data' => collect($record)->except([
                     'user_id',
-                    'type_id',
                 ])->keys()->merge([
-                    'type',
                     'tags',
                 ])->toArray(),
             ]);
@@ -96,7 +85,6 @@ class RecordControllerTest extends TestCase
         $record = factory(Record::class)->create([
             'private' => true,
             'user_id' => $this->user->id,
-            'type_id' => $this->type->id,
         ]);
         $record->tags()->sync($this->tag->id);
 

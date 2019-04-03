@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Tag;
-use App\Type;
 use App\User;
 use App\Record;
 use Tests\TestCase;
@@ -16,8 +15,6 @@ class UserModelTest extends TestCase
 
     protected $user;
 
-    protected $type;
-
     protected $record;
 
     protected $tag;
@@ -28,11 +25,8 @@ class UserModelTest extends TestCase
 
         $this->user = factory(User::class)->create();
 
-        $this->type = factory(Type::class)->create();
-
         $this->record = factory(Record::class)->create([
             'user_id' => $this->user->id,
-            'type_id' => $this->type->id,
         ]);
 
         $this->tag = factory(Tag::class)->create([

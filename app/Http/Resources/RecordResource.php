@@ -23,7 +23,6 @@ class RecordResource extends JsonResource
             'created_at' => $this->created_at->diffForHumans(),
             'updated_at' => $this->updated_at->diffForHumans(),
             'user' => new UserResource($this->whenLoaded('user')),
-            'type' => new TypeResource($this->whenLoaded('type')),
             'tags' => TagResource::collection($this->whenLoaded('tags')),
         ];
     }

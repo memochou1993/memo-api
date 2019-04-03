@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Type;
 use App\User;
 use App\Record;
 use App\Contracts\RecordInterface;
@@ -197,10 +196,8 @@ class RecordRepository implements RecordInterface
      */
     public function storeRecord(User $user)
     {
-        $type = Type::find($this->request->type_id);
-
         $record = new Record($this->request->all());
-        $record->associate(compact(['user', 'type']));
+        $record->associate(compact(['user']));
         $record->save();
 
         $record->tags()->sync($this->request->tag_ids);

@@ -21,8 +21,6 @@ class CreateRecordsTable extends Migration
             $table->boolean('private')->default(true);
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->integer('type_id')->unsigned();
-            $table->foreign('type_id')->references('id')->on('types')->onDelete('cascade');
             $table->timestamps();
         });
     }

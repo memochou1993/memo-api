@@ -36,14 +36,6 @@ class Record extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\belongsTo
-     */
-    public function type()
-    {
-        return $this->belongsTo(Type::class);
-    }
-
-    /**
      * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
      */
     public function tags()

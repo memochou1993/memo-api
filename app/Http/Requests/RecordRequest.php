@@ -30,7 +30,6 @@ class RecordRequest extends FormRequest
                     'with' => [
                         new ElementsInArray([
                             'user',
-                            'type',
                             'tags',
                         ]),
                         'nullable',
@@ -58,10 +57,6 @@ class RecordRequest extends FormRequest
                     'private' => [
                         'boolean',
                     ],
-                    'type_id' => [
-                        'required',
-                        'integer',
-                    ],
                     'tag_ids' => [
                         'array',
                     ],
@@ -71,7 +66,6 @@ class RecordRequest extends FormRequest
                     'with' => [
                         new ElementsInArray([
                             'user',
-                            'type',
                             'tags',
                         ]),
                         'nullable',
